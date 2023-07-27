@@ -1,8 +1,5 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-button_town_car = KeyboardButton('🚗 Лекговое авто')
-button_truck_car = KeyboardButton('🚚 Грузовое авто')
-
-start_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-
-start_kb.row(button_town_car, button_truck_car)
+start_kb = InlineKeyboardMarkup(row_width=2)
+start_kb.add(InlineKeyboardButton(text='🚗 Лекговое авто', callback_data='Лекговое авто'),
+             InlineKeyboardButton(text='🚚 Грузовое авто', callback_data='Грузовое авто'))

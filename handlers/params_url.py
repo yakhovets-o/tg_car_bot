@@ -3,7 +3,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 from aiogram import types, Dispatcher
-from aiogram.types import ReplyKeyboardRemove
 from keyboards import start_kb
 
 
@@ -23,19 +22,20 @@ async def car_cancel(message: types.Message, state: FSMContext):
     current_sate = await state.get_state()
     if current_sate is None:
         return
-    await message.answer('Действие отменено', reply_markup=ReplyKeyboardRemove())
+    await message.answer('Действие отменено')
     await state.finish()
 
 
-async def car_choice(message: types.Message, state: FSMContext):
-    if message.text == '🚗 Лекговое авто':
+async def car_choice(call: types.CallbackQuery, state: FSMContext):
+    if call.data == 'Лекговое авто':
         async with state.proxy() as data:
             data['cars'] = 'Лекговое авто'
-    if message.text == '🚚 Грузовое авто':
+    if call.data == 'Грузовое авто':
         async with state.proxy() as data:
             data['cars'] = "Грузовое авто"
     await FSM.next()
-    await message.answer('введите минимальную стоимость ', reply_markup=ReplyKeyboardRemove())
+    await call.message.answer('введите минимальную стоимость ')
+    await call.answer()
 
 
 async def car_price_start(message: types.Message, state: FSMContext):
@@ -82,7 +82,7 @@ def register_handlers_params(dp: Dispatcher):
     dp.register_message_handler(FSM_start, commands='begin', state=None)
     dp.register_message_handler(car_cancel, state="*", commands='break')
     dp.register_message_handler(car_cancel, Text(equals='break', ignore_case=True), state="*")
-    dp.register_message_handler(car_choice, state=FSM.car)
+    dp.register_callback_query_handler(car_choice, Text(endswith='авто'), state=FSM.car)
     dp.register_message_handler(car_price_start, state=FSM.min_price)
     dp.register_message_handler(car_price_finish, state=FSM.max_price)
     dp.register_message_handler(car_time, state=FSM.time)
