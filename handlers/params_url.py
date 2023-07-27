@@ -26,6 +26,11 @@ async def car_cancel(message: types.Message, state: FSMContext):
     await state.finish()
 
 
+async def car_message(massage: types.Message):
+    await massage.answer(f'Укажите что то из предложенных вариантов\n'
+                         f'Для отмены поиска вызовите команду /break', reply_markup=start_kb)
+
+
 async def car_choice(call: types.CallbackQuery, state: FSMContext):
     if call.data == 'Лекговое авто':
         async with state.proxy() as data:
@@ -71,17 +76,18 @@ async def car_time(message: types.Message, state: FSMContext):
                                  f'Максимальная сумма {data["&price_usd[max]="]} usd\n'
                                  f'Обновления будут поступать с {data["time"]}\n'
                                  )
+            await state.finish()
+            # async with state.proxy() as data:
+            #     params = dict(data)
     else:
         await message.answer('Некорректно указано время')
-    async with state.proxy() as data:
-        params = dict(data)
-    await state.finish()
 
 
 def register_handlers_params(dp: Dispatcher):
     dp.register_message_handler(FSM_start, commands='begin', state=None)
     dp.register_message_handler(car_cancel, state="*", commands='break')
     dp.register_message_handler(car_cancel, Text(equals='break', ignore_case=True), state="*")
+    dp.register_message_handler(car_message, state=FSM.car)
     dp.register_callback_query_handler(car_choice, Text(endswith='авто'), state=FSM.car)
     dp.register_message_handler(car_price_start, state=FSM.min_price)
     dp.register_message_handler(car_price_finish, state=FSM.max_price)

@@ -6,10 +6,12 @@ async def on_startup(_):
     print('Бот успешно запущен')
 
 
-from handlers import client, params_url
+from handlers import client, params_url, other
 
 client.register_handlers_client(dp)
 params_url.register_handlers_params(dp)
+other.register_handlers_other(dp)
+
 
 
 def main():

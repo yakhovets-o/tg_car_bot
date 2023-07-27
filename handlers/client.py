@@ -5,7 +5,8 @@ from other_func import salute, now_time
 
 async def start_command(message: types.Message):
     your_name = message.from_user.first_name
-    await message.answer(f'{salute(now_time)} {your_name} !')
+    await message.answer(f'{salute(now_time)} {your_name} !\n'
+                         f'Для указания  параметров поиска вызовите команду /begin')
 
 
 async def contacts_command(message: types.Message):
