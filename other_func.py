@@ -1,5 +1,7 @@
 import datetime
 
+
+# функция приветствия  при старте бота
 def salute(time):
     lst_time = [datetime.time(i, 0, 0) for i in [4, 11, 17, 23]]
     greetings = ['Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи']
