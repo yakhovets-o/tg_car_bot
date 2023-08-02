@@ -140,13 +140,14 @@ async def get_car(message: types.Message):
                        f'{hbold("Год: ")} {item["param_car"]}\n' \
                        f'{hbold("Дата и место: ")} {item["data_car"]}, {item["city_car"]}'
                 await message.answer(card)
+                await message.answer('Поиск окончен')
             # обнуление json файла
             with open(rf'C:\Users\lego\PycharmProjects\car_bot\cars_users\{id}.json', 'w') as file:
                 pass
             # удаление параметров из бд (что бы не было сохранений нескольких параметров из одного id)
             await db_py.db_del_user(id)
         else:
-            await message.answer('объявлений обнаружено не было')
+            await message.answer('Объявлений обнаружено не было')
 
 
 # результат получен

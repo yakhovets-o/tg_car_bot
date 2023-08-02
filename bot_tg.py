@@ -17,7 +17,7 @@ params_url.register_handlers_params(dp)
 other.register_handlers_other(dp)
 
 
-# запсу бота
+# запсуск бота
 def main():
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
 
